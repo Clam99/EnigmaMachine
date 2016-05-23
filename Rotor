@@ -1,8 +1,33 @@
-/**
- * Created by snoyes on 5/20/16.
- */
 import java.util.*;
 
 public class Rotor {
-
+    char[] inAlphabet;
+    char[] outAlphabet;
+    public Rotor(int num) {
+        inAlphabet = new char[26];
+        outAlphabet = new char[26];
+        for (int i = 0; i<26; i++) {
+            inAlphabet[i] = (char)(65+i);
+        }
+        switch (num) {
+            case 1:
+                outAlphabet = "EKMFLGDQVZNTOWYHXUSPAIBRCJ".toCharArray();
+                break;
+            case 2:
+                outAlphabet = "AJDKSIRUXBLHWTMCQGZNPYFVOE".toCharArray();
+                break;
+            case 3:
+                outAlphabet = "BDFHJLCPRTXVZNYEIWGAKMUSQO".toCharArray();
+                break;
+            case 4:
+                outAlphabet = "ESOVPZJAYQUIRHXLNFTGKDCMWB".toCharArray();
+                break;
+            case 5:
+                outAlphabet = "VZBRGITYUPSDNHLXAWMJQOFECK".toCharArray();
+                break;
+            default:
+                break;
+        }
+    }
 }
+
