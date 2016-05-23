@@ -1,6 +1,15 @@
-/**
- * Created by snoyes on 5/20/16.
- */
-public class Enigma {
+import java.util.*;
 
+public class Enigma {
+    Rotor[] rotors;
+    public Enigma(int[] r, char[] start){
+        Rotor r1 = new Rotor(r[0], start[0]);
+        Rotor r2 = new Rotor(r[1], start[1]);
+        Rotor r3 = new Rotor(r[2], start[2]);
+        rotors = new Rotor[3];
+        rotors[0] = r1;
+        rotors[1] = r2;
+        rotors[2] = r3;
+
+    }
 }
