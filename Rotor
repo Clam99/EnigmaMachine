@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class Rotor {
-    char[] inAlphabet;
-    char[] outAlphabet;
+    private char[] inAlphabet;
+    private char[] outAlphabet;
     public Rotor(int num) {
         inAlphabet = new char[26];
         outAlphabet = new char[26];
@@ -29,5 +29,16 @@ public class Rotor {
                 break;
         }
     }
+    public char getOutput(char c) {
+        int i = Arrays.asList(inAlphabet).indexOf(c);
+        if (i!=-1) {
+            return outAlphabet[i];
+        }
+        else {
+            System.out.println("Something has gone terribly wrong.");
+            return 'A';
+        }
+    }
 }
+
 
