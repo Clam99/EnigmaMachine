@@ -3,9 +3,12 @@ import java.util.*;
 public class Rotor {
     private char[] inAlphabet;
     private char[] outAlphabet;
-    public Rotor(int num) {
+    private int start;
+
+    public Rotor(int num, int s) {
         inAlphabet = new char[26];
         outAlphabet = new char[26];
+        start = s;
         for (int i = 0; i<26; i++) {
             inAlphabet[i] = (char)(65+i);
         }
@@ -32,6 +35,7 @@ public class Rotor {
     public char getOutput(char c) {
         int i = Arrays.asList(inAlphabet).indexOf(c);
         if (i!=-1) {
+            i += start;
             return outAlphabet[i];
         }
         else {
@@ -39,6 +43,15 @@ public class Rotor {
             return 'A';
         }
     }
+    public char getReversedOutput(char c) {
+        int i = Arrays.asList(outAlphabet).indexOf(c);
+        if (i!=-1) {
+            i -= start;
+            return inAlphabet[i];
+        }
+        else {
+            System.out.println("Something has gone terribly wrong.");
+            return 'A';
+        }
+    }
 }
-
-
