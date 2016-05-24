@@ -1,0 +1,28 @@
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.*;
+public class Driver {
+    public static void main(String[] args) {
+        int[] rotorNums = {1,4,2,1};
+        char[] startPos = {'D','T','E','P'};
+        try {
+            Enigma e = new Enigma(rotorNums, startPos);
+            File file = new File("input.txt");
+            String str = "";
+            //Read the string from the file
+            Scanner sc = new Scanner(file);
+            while (sc.hasNextLine()) {
+                str += sc.nextLine() + "\n";
+            }
+            sc.close();
+            String encrypted = e.encrypt(str);
+            PrintWriter writer = new PrintWriter("encrypted.txt", "UTF-8");
+            writer.print(encrypted);
+            writer.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+}
