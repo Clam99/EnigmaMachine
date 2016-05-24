@@ -1,5 +1,4 @@
 public class Rotor {
-	private char[] inAlphabet;
 	private char[] outAlphabet;
 	private char stepLetter;
 	private int start;
@@ -9,40 +8,31 @@ public class Rotor {
 	private int step;
 	private String[] rotor = new String[] { "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE",
 			"BDFHJLCPRTXVZNYEIWGAKMUSQO", "ESOVPZJAYQUIRHXLNFTGKDCMWB", "VZBRGITYUPSDNHLXAWMJQOFECK" };
+	private String[] rflctor = new String[] { "YRUHQSLDPXNGOKMIEBFZCWVJAT", "FVPJIAOYEDRZXWGCTKUQSBNMHL" };
 	private char[] turnNotch = new char[] { 'R', 'F', 'W', 'K', 'A' };
 
-	public Rotor(int num, int s, boolean reflect, int ring) { // num:1-5, s:1-26, r:1-26.
-		inAlphabet = new char[26];
+	public Rotor(int num, int s, boolean reflect, int ring) { // num:1-5 (1-2 for reflector), s:1-26, r:1-26.
 		outAlphabet = new char[26];
-		start = s - 1;
 		isReflector = reflect;
-		for (int i = 0; i < 26; i++) {
-			inAlphabet[i] = (char) (65 + i);
-		}
 		if (isReflector) {
 			start = 0;// force start to be zero if reflector
-			if (num == 1) {
-				outAlphabet = "YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray();
-			} else {
-				outAlphabet = "FVPJIAOYEDRZXWGCTKUQSBNMHL".toCharArray();
-			}
+			outalphabet = rflctor[num - 1].toCharArray();
 		} else {
-			String code;
-			code = rotor[num - 1];
+			start = s;
+			String code = rotor[num - 1];
 			stepLetter = turnNotch[num - 1];
 			code = rotate(code, ring);
 			step = (Let2Num(stepLetter) + 25) % 26;
 			outAlphabet = code.toCharArray();
 		}
-		findShift();
+		findShift(); // Determine the shift for each letter, both forward and backward.
 	}
 
 	public String rotate(String str, int shift) {
-		shift = (shift + 25) % 26;
 		return str.substring(shift) + str.substring(0, shift);
 	}
 
-	public void step() {
+	public void step() { //Step the rotor
 		int[] temp = new int[26];
 		for (int i = 0; i < 25; i++) {
 			temp[i + 1] = fwrdShift[i];
@@ -58,8 +48,8 @@ public class Rotor {
 		start++;
 	}
 
-	public boolean NeedStep() {
-		return (start == step);
+	public boolean NeedStep() { 
+		return (start==step);
 	}
 
 	public char getOutput(char c) {
