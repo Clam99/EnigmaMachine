@@ -2,14 +2,49 @@ import java.util.*;
 
 public class Enigma {
     Rotor[] rotors;
-    public Enigma(int[] r, char[] start){
-        Rotor r1 = new Rotor(r[0], start[0]);
-        Rotor r2 = new Rotor(r[1], start[1]);
-        Rotor r3 = new Rotor(r[2], start[2]);
+    Rotor reflector;
+    public Enigma(int[] rotorNums, char[] start) throws ArrayIndexOutOfBoundsException {
+        if (rotorNums.length != 4 || start.length != 4) {
+            ArrayIndexOutOfBoundsException up = new ArrayIndexOutOfBoundsException();
+            throw up;//ha ha
+        }
+        Rotor r1 = new Rotor(rotorNums[0], (int)Character.toUpperCase(start[0])-65, false);//fast rotor
+        Rotor r2 = new Rotor(rotorNums[1], (int)Character.toUpperCase(start[1])-65, false);//medium rotor
+        Rotor r3 = new Rotor(rotorNums[2], (int)Character.toUpperCase(start[2])-65, false);//slow rotor
+        reflector = new Rotor(rotorNums[3], (int)Character.toUpperCase(start[3])-65, true);
         rotors = new Rotor[3];
         rotors[0] = r1;
         rotors[1] = r2;
         rotors[2] = r3;
-
+    }
+    public String encrypt(String s) {
+        String out = "";
+        for (int i = 0;i<s.length();i++) {//remove spaces
+            if (((int)s.charAt(i)<=90 && (int)s.charAt(i)>=65) || ((int)s.charAt(i)<=122 && (int)s.charAt(i)>=97)) {
+                out += Character.toString(encrypt(s.charAt(i)));
+                increment();
+            }
+        }
+        return out;
+    }
+    public char encrypt(char c) {
+        c = Character.toUpperCase(c);
+        for (int i = 0; i<rotors.length;i++) {
+            c = rotors[i].getOutput(c);
+        }
+        c = reflector.getOutput(c);
+        for (int i = rotors.length-1; i>=0; i--) {
+            c = rotors[i].getReversedOutput(c);
+        }
+        return c;
+    }
+    public void increment() {
+        rotors[0].increment();
+        if (rotors[0].getPosition() == 0) {
+            rotors[1].increment();
+            if (rotors[1].getPosition() == 0) {
+                rotors[2].increment();
+            }
+        }
     }
 }
