@@ -1,68 +1,89 @@
-import java.util.*;
-
 public class Rotor {
-    private char[] inAlphabet;
-    private char[] outAlphabet;
-    private int start;
-    private boolean isReflector;
+	private char[] inAlphabet;
+	private char[] outAlphabet;
+	private char stepLetter;
+	private int start;
+	private boolean isReflector;
+	private int[] fwrdShift;
+	private int[] bwrdShift;
+	private int step;
+	private String[] rotor = new String[] { "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+			"BDFHJLCPRTXVZNYEIWGAKMUSQO", "ESOVPZJAYQUIRHXLNFTGKDCMWB", "VZBRGITYUPSDNHLXAWMJQOFECK" };
+	private char[] turnNotch = new char[] { 'R', 'F', 'W', 'K', 'A' };
 
-    public Rotor(int num, int s, boolean reflect) {
-        inAlphabet = new char[26];
-        outAlphabet = new char[26];
-        start = s;
-        isReflector = reflect;
-        for (int i = 0; i<26; i++) {
-            inAlphabet[i] = (char)(65+i);
-        }
-        if (isReflector) {
-            start = 0;//force start to be zero if reflector
-            if (num == 1) {
-                outAlphabet = "YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray();
-            }
-            else {
-                outAlphabet = "FVPJIAOYEDRZXWGCTKUQSBNMHL".toCharArray();
-            }
-        }
-        else {
-            switch (num) {
-                case 1:
-                    outAlphabet = "EKMFLGDQVZNTOWYHXUSPAIBRCJ".toCharArray();
-                    break;
-                case 2:
-                    outAlphabet = "AJDKSIRUXBLHWTMCQGZNPYFVOE".toCharArray();
-                    break;
-                case 3:
-                    outAlphabet = "BDFHJLCPRTXVZNYEIWGAKMUSQO".toCharArray();
-                    break;
-                case 4:
-                    outAlphabet = "ESOVPZJAYQUIRHXLNFTGKDCMWB".toCharArray();
-                    break;
-                default:
-                    outAlphabet = "VZBRGITYUPSDNHLXAWMJQOFECK".toCharArray();
-                    break;
-            }
-        }
-    }
-    public char getOutput(char c) {
-        int i = Arrays.asList(inAlphabet).indexOf(c);
-        if (i!=-1) {
-            i += start;
-            return outAlphabet[i];
-        }
-        else {
-            System.out.println("Something has gone terribly wrong.");
-            return 'A';
-        }
-    }
-    public char getReversedOutput(char c) {
-        int i = Arrays.asList(outAlphabet).indexOf(c);
-        if (i!=-1) {
-            i -= start;
-            return inAlphabet[i];
-        }
-        else {
-            System.out.println("Something has gone terribly wrong.");
-            return 'A';
-        }
-    }
+	public Rotor(int num, int s, boolean reflect, int ring) { // num:1-5, s:1-26, r:1-26.
+		inAlphabet = new char[26];
+		outAlphabet = new char[26];
+		start = s - 1;
+		isReflector = reflect;
+		for (int i = 0; i < 26; i++) {
+			inAlphabet[i] = (char) (65 + i);
+		}
+		if (isReflector) {
+			start = 0;// force start to be zero if reflector
+			if (num == 1) {
+				outAlphabet = "YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray();
+			} else {
+				outAlphabet = "FVPJIAOYEDRZXWGCTKUQSBNMHL".toCharArray();
+			}
+		} else {
+			String code;
+			code = rotor[num - 1];
+			stepLetter = turnNotch[num - 1];
+			code = rotate(code, ring);
+			step = (Let2Num(stepLetter) + 25) % 26;
+			outAlphabet = code.toCharArray();
+		}
+		findShift();
+	}
+
+	public String rotate(String str, int shift) {
+		shift = (shift + 25) % 26;
+		return str.substring(shift) + str.substring(0, shift);
+	}
+
+	public void step() {
+		int[] temp = new int[26];
+		for (int i = 0; i < 25; i++) {
+			temp[i + 1] = fwrdShift[i];
+		}
+		temp[0] = fwrdShift[25];
+		fwrdShift = temp;
+		temp = new int[26];
+		for (int i = 0; i < 25; i++) {
+			temp[i + 1] = bwrdShift[i];
+		}
+		temp[0] = bwrdShift[25];
+		bwrdShift = temp;
+		start++;
+	}
+
+	public boolean NeedStep() {
+		return (start == step);
+	}
+
+	public char getOutput(char c) {
+		return Num2Let((Let2Num(c) + fwrdShift[Let2Num(c)]) % 26);
+	}
+
+	public char getReversedOutput(char c) {
+		return Num2Let((Let2Num(c) + bwrdShift[Let2Num(c)]) % 26);
+	}
+
+	private void findShift() {
+		for (int i = 0; i < 26; i++) {
+			int j = Let2Num(outAlphabet[i]);
+			fwrdShift[i] = (26 + j - i) % 26;
+			bwrdShift[j] = (26 + i - j) % 26;
+		}
+	}
+
+	public int Let2Num(char c) {
+		return (int) c - 65;
+	}
+
+	public char Num2Let(int i) {
+		return (char) (i + 65);
+	}
+
 }
