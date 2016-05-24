@@ -44,25 +44,39 @@ public class Rotor {
         }
     }
     public char getOutput(char c) {
-        int i = Arrays.asList(inAlphabet).indexOf(c);
+        int i = new String(inAlphabet).indexOf(Character.toString(c));
         if (i!=-1) {
             i += start;
+            i = i%26;
             return outAlphabet[i];
         }
         else {
-            System.out.println("Something has gone terribly wrong.");
+            System.out.println("Something has gone terribly wrong: " + Character.toString(c));
+            System.out.println("Here's the alphabet: " + Arrays.toString(inAlphabet));
             return 'A';
         }
     }
     public char getReversedOutput(char c) {
-        int i = Arrays.asList(outAlphabet).indexOf(c);
+        int i = new String(outAlphabet).indexOf(Character.toString(c));
         if (i!=-1) {
             i -= start;
+            i += 26;
+            i = i%26;
             return inAlphabet[i];
         }
         else {
-            System.out.println("Something has gone terribly wrong.");
+            System.out.println("Something has gone terribly wrong: " + Character.toString(c));
+            System.out.println("Here's the alphabet: " + Arrays.toString(outAlphabet));
             return 'A';
         }
+    }
+    public void increment() {
+        if (start == 25) {
+            start = 0;
+        }
+        else { start++; }
+    }
+    public int getPosition() {
+        return start;
     }
 }
