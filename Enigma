@@ -40,6 +40,11 @@ public class Enigma {
     }
     public void increment() {
         rotors[0].increment();
+        if (rotors[1].getPosition() == 25) {
+        	rotors[1].increment();
+        	rotors[2].increment();
+        	return;
+        }
         if (rotors[0].getPosition() == 0) {
             rotors[1].increment();
             if (rotors[1].getPosition() == 0) {
