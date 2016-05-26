@@ -11,7 +11,7 @@ public class Enigma {
         Rotor r1 = new Rotor(rotorNums[0], (int)Character.toUpperCase(start[0])-65, (int)Character.toUpperCase(ring[0])-65, false);//fast rotor
         Rotor r2 = new Rotor(rotorNums[1], (int)Character.toUpperCase(start[1])-65, (int)Character.toUpperCase(ring[1])-65, false);//medium rotor
         Rotor r3 = new Rotor(rotorNums[2], (int)Character.toUpperCase(start[2])-65, (int)Character.toUpperCase(ring[2])-65, false);//slow rotor
-        reflector = new Rotor(rotorNums[3], 0, true);
+        reflector = new Rotor(rotorNums[3], 0, 0, true);
         rotors = new Rotor[3];
         rotors[0] = r1;
         rotors[1] = r2;
