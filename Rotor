@@ -52,10 +52,10 @@ public class Rotor {
         }
     }
     public char getOutput(char c) {
-        char in = c.shift(s);
+        char in = c.shift(start);
         int i = new String(inAlphabet).indexOf(Character.toString(in));
         if (i!=-1) {
-            return outAlphabet[i].shift(26-s);
+            return outAlphabet[i].shift(26-start);
         }
         else {
             System.out.println("Something has gone terribly wrong: " + Character.toString(c));
@@ -64,10 +64,10 @@ public class Rotor {
         }
     }
     public char getReversedOutput(char c) {
-        char in = c.shift(s);
+        char in = c.shift(start);
         int i = new String(outAlphabet).indexOf(Character.toString(in));
         if (i!=-1) {
-            return inAlphabet[i].shift(26-s);
+            return inAlphabet[i].shift(26-start);
         }
         else {
             System.out.println("Something has gone terribly wrong: " + Character.toString(c));
