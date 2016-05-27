@@ -1,9 +1,10 @@
 import java.util.*;
 
 public class Enigma {
-    Rotor[] rotors;
-    Rotor reflector;
-    public Enigma(int[] rotorNums, char[] start, char[] ring) throws ArrayIndexOutOfBoundsException {
+    private Rotor[] rotors;
+    private Rotor reflector;
+    private Plugboard pb;
+    public Enigma(int[] rotorNums, char[] start, char[] ring, String[] plug) throws ArrayIndexOutOfBoundsException {
         if (rotorNums.length != 4 || start.length != 3) {
             ArrayIndexOutOfBoundsException up = new ArrayIndexOutOfBoundsException();
             throw up;//ha ha
@@ -16,6 +17,7 @@ public class Enigma {
         rotors[0] = r1;
         rotors[1] = r2;
         rotors[2] = r3;
+        pb = new Plugboard(plug);
     }
     public String encrypt(String s) {
         String out = "";
@@ -29,6 +31,7 @@ public class Enigma {
     }
     public char encrypt(char c) {
         c = Character.toUpperCase(c);
+        c = pb.output(c);
         for (int i = 0; i<rotors.length;i++) {
             c = rotors[i].getOutput(c);
         }
@@ -36,6 +39,7 @@ public class Enigma {
         for (int i = rotors.length-1; i>=0; i--) {
             c = rotors[i].getReversedOutput(c);
         }
+        c = pb.output(c);
         return c;
     }
     public void increment() {
