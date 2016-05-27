@@ -3,18 +3,35 @@ import java.io.PrintWriter;
 import java.util.*;
 public class Driver {
     public static void main(String[] args) {
-        int[] rotorNums = {1,4,2,1};
-        char[] startPos = {'D','T','E','P'};
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of the first (fast) rotor:");
+        int r1 = sc.nextInt();
+        System.out.println("Enter the number of the second (medium) rotor:");
+        int r2 = sc.nextInt();
+        System.out.println("Enter the number of the third (slow) rotor:");
+        int r3 = sc.nextInt();
+        System.out.println("Enter the number of the first rotor offset:");
+        int o1 = sc.nextInt();
+        System.out.println("Enter the number of the second rotor offset:");
+        int o2 = sc.nextInt();
+        System.out.println("Enter the number of the third rotor offset:");
+        int o3 = sc.nextInt();
+        System.out.println("Enter the plugboard swaps in the form: 'AB,CD,EF,GH'.  Do not have letters used in multiple pairs and do not have more than 13 pairs.");
+        String plug = sc.nextLine();
+        String[] pairs = plug.split("\\s*,\\s*");
+        int[] rotorNums = {r1,r2,r3,1};
+        int[] startPos = {o1,o2,o3,0};
+        sc.close();
         try {
-            Enigma e = new Enigma(rotorNums, startPos);
+            Enigma e = new Enigma(rotorNums, startPos, pairs);
             File file = new File("input.txt");
             String str = "";
             //Read the string from the file
-            Scanner sc = new Scanner(file);
-            while (sc.hasNextLine()) {
-                str += sc.nextLine() + "\n";
+            Scanner sc2 = new Scanner(file);
+            while (sc2.hasNextLine()) {
+                str += sc2.nextLine() + "\n";
             }
-            sc.close();
+            sc2.close();
             String encrypted = e.encrypt(str);
             PrintWriter writer = new PrintWriter("encrypted.txt", "UTF-8");
             writer.print(encrypted);
